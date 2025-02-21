@@ -4,7 +4,6 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import "./Calendar.css"; // Import your CSS file
-import { countries } from "./countries";
 
 function Calendar() {
   const currentYear = new Date().getFullYear();
@@ -23,6 +22,9 @@ function Calendar() {
     setError(null);
     const allHolidays = [];
 
+    const countries = [
+        'DE'
+    ]
     try {
       await Promise.all(
         countries.map(async (code) => {
@@ -90,7 +92,7 @@ function Calendar() {
           headerToolbar={{
             start: "today prev,next",
             center: "title",
-            end: "dayGridMonth timeGridWeek timeGridDay",
+            end: "",
           }}
           height={"80vh"}
           events={holidays.map((holiday) => ({
@@ -105,9 +107,29 @@ function Calendar() {
           }))}
           eventClick={handleEventClick}
           eventContent={(eventInfo) => (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <img src={eventInfo.event.extendedProps.countryImage} alt="Country Flag" style={{ width: '20px', height: '15px', marginRight: '5px' }} />
-              <span>{eventInfo.event.title}</span>
+            <div 
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent:'center',
+                padding: '5px', 
+                margin: '5px', 
+                background: '', 
+                borderRadius: '5px',
+                textAlign: 'center',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                maxWidth: '100px' // Adjust width as needed
+              }} 
+              title={eventInfo.event.title} // Tooltip for full text visibility
+            >
+              <img 
+                src={eventInfo.event.extendedProps.countryImage} 
+                alt="Country Flag" 
+                style={{ width: '20px', height: '15px', marginRight: '5px' }} 
+              />
+              <span>{eventInfo.event.title.length > 5 ? `${eventInfo.event.title.slice(0, 5)}....` : eventInfo.event.title}</span>
             </div>
           )}
         />

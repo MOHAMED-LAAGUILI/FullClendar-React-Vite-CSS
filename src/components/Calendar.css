@@ -1,8 +1,5 @@
 /* Root Variables */
 :root {
-    --primary-color: #007bff;
-    --secondary-color: #ffffff;
-    --bg-color: rgba(255, 255, 255, 0.15);
     --border-color: rgba(255, 255, 255, 0.2);
     --text-color: #fff;
     --hover-bg: rgba(255, 255, 255, 0.3);
@@ -11,9 +8,7 @@
   
   /* Smooth background */
   body {
-    background: linear-gradient(135deg, #2b5876, #4e4376);
     font-family: "Poppins", sans-serif;
-    color: var(--text-color);
     margin: 0;
     padding: 0;
   }
@@ -36,49 +31,14 @@
     justify-content: center;
   }
   
-  /* Glassmorphism select container */
-  .select-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12px;
-    background: var(--bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0px 4px 10px var(--shadow-color);
-    transition: all 0.3s ease-in-out;
-  }
+ 
   
   .select-group:hover {
     background: var(--hover-bg);
   }
   
-  /* Labels */
-  .select-group label {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: var(--text-color);
-  }
-  
-  /* Select dropdown */
-  .select-group select {
-    padding: 10px 15px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    background: var(--secondary-color);
-    color: #333;
-    cursor: pointer;
-    outline: none;
-    transition: all 0.3s ease;
-  }
-  
-  .select-group select:hover {
-    background: #f0f0f0;
-  }
-  
+
+
   /* Error message */
   .error-message {
     background: rgba(255, 0, 0, 0.2);
@@ -106,28 +66,14 @@
     background: darkred;
   }
   
-  /* Loading effect */
-  .loading {
-    font-size: 18px;
-    font-weight: bold;
-    animation: fadeIn 1s ease-in-out infinite alternate;
-  }
-  
-  /* Smooth fade animation */
-  @keyframes fadeIn {
-    from {
-      opacity: 0.6;
-    }
-    to {
-      opacity: 1;
-    }
-  }
+
+
   
   /* FullCalendar customization */
   .fc {
     width: 90%;
     max-width: 1200px;
-    background: var(--bg-color);
+    background: white;
     border-radius: 12px;
     padding: 15px;
     backdrop-filter: blur(10px);
@@ -136,45 +82,11 @@
     transition: transform 0.3s ease-in-out;
   }
   
- 
-  .event-block {
-    background-color: rgba(0, 123, 255, 0.8); /* Light blue */
-    color: white;
-    padding: 8px; /* Add some padding for better spacing */
-    border-radius: 5px;
-    text-align: center;
-    font-size: 12px;
-    overflow: hidden; /* Prevent overflow */
-    white-space: normal; /* Allow text to wrap */
-    height: auto; /* Let height adjust based on content */
-  }
-  
-  .event-description {
-    color: black;
-    font-size: 10px;
-    margin-top: 3px;
-    overflow: hidden; /* Prevent overflow */
-    white-space: normal; /* Allow text to wrap */
-    text-overflow: ellipsis; /* Add ellipsis for long text */
-  }
-  .event-tooltip {
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.8); /* Dark background for better contrast */
-    color: white; /* White text color */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    max-width: 200px; /* Adjust as needed */
-  }
-  
-  .event-tooltip img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 5px;
-  }
 
+
+ 
+ 
+/* to make this modal bellow the calendar remove this class overlay*/
   .modal-overlay {
     position: fixed;
     top: 0;
@@ -194,7 +106,6 @@
     padding: 20px;
     border-radius: 8px;
     max-width: 400px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
   
   .modal-content h2 {
@@ -216,6 +127,25 @@
     border-radius: 5px;
     cursor: pointer;
   }
+ 
   
   
+  .fc-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .fc-button {
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    min-width: 80px;
+  }
+
+
+
+
+
   
