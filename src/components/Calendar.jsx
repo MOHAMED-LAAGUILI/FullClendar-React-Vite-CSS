@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
+import timeGridPlugin from "@fullcalendar/timegrid"; // Importing the time grid plugin
 import interactionPlugin from "@fullcalendar/interaction";
 import "./Calendar.css"; // Import the CSS file
 
@@ -31,6 +31,7 @@ function Calendar() {
 
       const formattedHolidays = data.map((holiday) => ({
         title: holiday.localName || "Holiday",
+        description: holiday.name, // Store full description
         start: new Date(holiday.date).toISOString().split("T")[0],
         allDay: true,
       }));
@@ -42,6 +43,16 @@ function Calendar() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Custom render function for event content
+  const renderEventContent = (eventInfo) => {
+    return (
+      <div className="event-block">
+        <strong>{eventInfo.event.title}</strong>
+        <p className="event-description">{eventInfo.event.extendedProps.description}</p>
+      </div>
+    );
   };
 
   return (
@@ -59,7 +70,6 @@ function Calendar() {
             <option value="DE">🇩🇪 Germany</option>
             <option value="CA">🇨🇦 Canada</option>
             <option value="MA">🇲🇦 Maroc</option>
-
           </select>
         </div>
 
@@ -91,15 +101,16 @@ function Calendar() {
         <p className="loading">Loading holidays...</p>
       ) : (
         <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView={"dayGridMonth"}
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]} // Include all plugins here
+          initialView="dayGridMonth"
           headerToolbar={{
             start: "today prev,next",
             center: "title",
-            end: "dayGridMonth timeGridWeek timeGridDay",
+            end: "dayGridMonth,timeGridWeek,timeGridDay",
           }}
           height={"80vh"}
           events={holidays}
+          eventContent={renderEventContent} // Use custom event renderer
         />
       )}
     </div>

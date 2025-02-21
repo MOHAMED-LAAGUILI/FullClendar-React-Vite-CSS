@@ -137,4 +137,23 @@
   }
   
  
+  .event-block {
+    background-color: rgba(0, 123, 255, 0.8); /* Light blue */
+    color: white;
+    padding: 8px; /* Add some padding for better spacing */
+    border-radius: 5px;
+    text-align: center;
+    font-size: 12px;
+    overflow: hidden; /* Prevent overflow */
+    white-space: normal; /* Allow text to wrap */
+    height: auto; /* Let height adjust based on content */
+  }
+  
+  .event-description {
+    font-size: 10px;
+    margin-top: 3px;
+    overflow: hidden; /* Prevent overflow */
+    white-space: normal; /* Allow text to wrap */
+    text-overflow: ellipsis; /* Add ellipsis for long text */
+  }
   
