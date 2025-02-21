@@ -3,21 +3,13 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import "./Calendar.css"; // Import the CSS file
-
-const countries = {
-  FR: { name: "France", flag: "🇫🇷" },
-  JP: { name: "Japan", flag: "🇯🇵" },
-  US: { name: "USA", flag: "🇺🇸" },
-  DE: { name: "Germany", flag: "🇩🇪" },
-  GB: { name: "UK", flag: "🇬🇧" },
-  CA: { name: "Canada", flag: "🇨🇦" },
-  MA: { name: "Morocco", flag: "🇲🇦" },
-};
+import "./Calendar.css"; // Import your CSS file
 
 function Calendar() {
   const currentYear = new Date().getFullYear();
   const [holidays, setHolidays] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -29,11 +21,11 @@ function Calendar() {
     setLoading(true);
     setError(null);
     const allHolidays = [];
+    const countries = ["FR", "JP", "US", "DE", "GB", "CA", "MA"];
 
     try {
-      // Fetch holidays for each country
       await Promise.all(
-        Object.entries(countries).map(async ([code, { name }]) => {
+        countries.map(async (code) => {
           const response = await fetch(
             `https://date.nager.at/api/v3/PublicHolidays/${currentYear}/${code}`
           );
@@ -42,13 +34,19 @@ function Calendar() {
 
           const data = await response.json();
 
+          const countryResponse = await fetch(
+            `https://restcountries.com/v3.1/alpha/${code}`
+          );
+          const countryData = await countryResponse.json();
+          const flagUrl = countryData[0].flags.svg; // Get flag image URL
+
           const formattedHolidays = data.map((holiday) => ({
-            title: `${holiday.localName} - ${name}`,
-            description: holiday.name, // Description
+            title: holiday.localName,
+            description: holiday.name,
             start: new Date(holiday.date).toISOString().split("T")[0],
             allDay: true,
-            country: name, // Store country name
-            picture: "https://via.placeholder.com/100" // Replace with actual picture URL
+            countryImage: flagUrl, // Use flag image from REST API
+            picture: "https://via.placeholder.com/600x200.png?text=Event+Image", // Placeholder for event image
           }));
 
           allHolidays.push(...formattedHolidays);
@@ -64,32 +62,14 @@ function Calendar() {
     }
   };
 
-  // Custom render function for event content
-  const renderEventContent = (eventInfo) => {
-    return (
-      <div className="event-block" title={eventInfo.event.title}>
-        <strong>{eventInfo.event.title}</strong>
-      </div>
-    );
+  const handleEventClick = (info) => {
+    setModalData(info.event.extendedProps);
+    setModalOpen(true);
   };
 
-  // Custom event tooltip
-  const handleEventMouseEnter = (info) => {
-    const tooltip = document.createElement("div");
-    tooltip.className = "event-tooltip";
-    tooltip.innerHTML = `
-      <strong>${info.event.title}</strong><br>
-      ${info.event.extendedProps.description}<br>
-      <img src="${info.event.extendedProps.picture}" alt="${info.event.title}" />
-    `;
-    document.body.appendChild(tooltip);
-    tooltip.style.position = "absolute";
-    tooltip.style.left = `${info.jsEvent.clientX + 5}px`;
-    tooltip.style.top = `${info.jsEvent.clientY + 5}px`;
-
-    info.el.addEventListener("mouseleave", () => {
-      tooltip.remove();
-    });
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalData(null);
   };
 
   return (
@@ -106,17 +86,36 @@ function Calendar() {
       ) : (
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
+          initialView={"dayGridMonth"}
           headerToolbar={{
             start: "today prev,next",
             center: "title",
-            end: "dayGridMonth,timeGridWeek,timeGridDay",
+            end: "dayGridMonth timeGridWeek timeGridDay",
           }}
           height={"80vh"}
-          events={holidays}
-          eventContent={renderEventContent} // Use custom event renderer
-          eventMouseEnter={handleEventMouseEnter} // Handle mouse enter to show tooltip
+          events={holidays.map((holiday) => ({
+            title: holiday.title,
+            start: holiday.start,
+            allDay: holiday.allDay,
+            extendedProps: {
+              description: holiday.description,
+              countryImage: holiday.countryImage,
+              picture: holiday.picture,
+            },
+          }))}
+          eventClick={handleEventClick} // Add this line to handle event clicks
         />
+      )}
+
+      {modalOpen && modalData && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <img src={modalData.countryImage} alt={modalData.title} className="country-banner" />
+            <h2>{modalData.title}</h2>
+            <p><strong>Description:</strong> {modalData.description}</p>
+            <button onClick={closeModal}>Close</button>
+          </div>
+        </div>
       )}
     </div>
   );
