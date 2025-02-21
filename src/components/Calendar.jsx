@@ -1,42 +1,61 @@
 import { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid"; // Importing the time grid plugin
+import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import "./Calendar.css"; // Import the CSS file
+
+const countries = {
+  FR: { name: "France", flag: "🇫🇷" },
+  JP: { name: "Japan", flag: "🇯🇵" },
+  US: { name: "USA", flag: "🇺🇸" },
+  DE: { name: "Germany", flag: "🇩🇪" },
+  GB: { name: "UK", flag: "🇬🇧" },
+  CA: { name: "Canada", flag: "🇨🇦" },
+  MA: { name: "Morocco", flag: "🇲🇦" },
+};
 
 function Calendar() {
   const currentYear = new Date().getFullYear();
   const [holidays, setHolidays] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState("US");
-  const [selectedYear, setSelectedYear] = useState(currentYear);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchHolidays(selectedCountry, selectedYear);
-  }, [selectedCountry, selectedYear]);
+    fetchHolidays();
+  }, []);
 
-  const fetchHolidays = async (countryCode, year) => {
+  const fetchHolidays = async () => {
     setLoading(true);
     setError(null);
+    const allHolidays = [];
+
     try {
-      const response = await fetch(
-        `https://date.nager.at/api/v3/PublicHolidays/${year}/${countryCode}`
+      // Fetch holidays for each country
+      await Promise.all(
+        Object.entries(countries).map(async ([code, { name }]) => {
+          const response = await fetch(
+            `https://date.nager.at/api/v3/PublicHolidays/${currentYear}/${code}`
+          );
+
+          if (!response.ok) throw new Error("Failed to fetch holidays");
+
+          const data = await response.json();
+
+          const formattedHolidays = data.map((holiday) => ({
+            title: `${holiday.localName} - ${name}`,
+            description: holiday.name, // Description
+            start: new Date(holiday.date).toISOString().split("T")[0],
+            allDay: true,
+            country: name, // Store country name
+            picture: "https://via.placeholder.com/100" // Replace with actual picture URL
+          }));
+
+          allHolidays.push(...formattedHolidays);
+        })
       );
 
-      if (!response.ok) throw new Error("Failed to fetch holidays");
-
-      const data = await response.json();
-
-      const formattedHolidays = data.map((holiday) => ({
-        title: holiday.localName || "Holiday",
-        description: holiday.name, // Store full description
-        start: new Date(holiday.date).toISOString().split("T")[0],
-        allDay: true,
-      }));
-
-      setHolidays(formattedHolidays);
+      setHolidays(allHolidays);
     } catch (error) {
       console.error("Error fetching holidays:", error);
       setError("Could not load holidays. Please try again.");
@@ -48,52 +67,37 @@ function Calendar() {
   // Custom render function for event content
   const renderEventContent = (eventInfo) => {
     return (
-      <div className="event-block">
+      <div className="event-block" title={eventInfo.event.title}>
         <strong>{eventInfo.event.title}</strong>
-        <p className="event-description">{eventInfo.event.extendedProps.description}</p>
       </div>
     );
   };
 
+  // Custom event tooltip
+  const handleEventMouseEnter = (info) => {
+    const tooltip = document.createElement("div");
+    tooltip.className = "event-tooltip";
+    tooltip.innerHTML = `
+      <strong>${info.event.title}</strong><br>
+      ${info.event.extendedProps.description}<br>
+      <img src="${info.event.extendedProps.picture}" alt="${info.event.title}" />
+    `;
+    document.body.appendChild(tooltip);
+    tooltip.style.position = "absolute";
+    tooltip.style.left = `${info.jsEvent.clientX + 5}px`;
+    tooltip.style.top = `${info.jsEvent.clientY + 5}px`;
+
+    info.el.addEventListener("mouseleave", () => {
+      tooltip.remove();
+    });
+  };
+
   return (
     <div className="calendar-container">
-      <div className="controls">
-        <div className="select-group">
-          <label>Select Country:</label>
-          <select
-            value={selectedCountry}
-            onChange={(e) => setSelectedCountry(e.target.value)}
-          >
-            <option value="US">🇺🇸 USA</option>
-            <option value="GB">🇬🇧 UK</option>
-            <option value="FR">🇫🇷 France</option>
-            <option value="DE">🇩🇪 Germany</option>
-            <option value="CA">🇨🇦 Canada</option>
-            <option value="MA">🇲🇦 Maroc</option>
-          </select>
-        </div>
-
-        <div className="select-group">
-          <label>Select Year:</label>
-          <select
-            value={selectedYear}
-            onChange={(e) => setSelectedYear(Number(e.target.value))}
-          >
-            {[currentYear, currentYear + 1, currentYear + 2].map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
       {error && (
         <div className="error-message">
           {error}{" "}
-          <button onClick={() => fetchHolidays(selectedCountry, selectedYear)}>
-            Retry
-          </button>
+          <button onClick={fetchHolidays}>Retry</button>
         </div>
       )}
 
@@ -101,7 +105,7 @@ function Calendar() {
         <p className="loading">Loading holidays...</p>
       ) : (
         <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]} // Include all plugins here
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           headerToolbar={{
             start: "today prev,next",
@@ -111,6 +115,7 @@ function Calendar() {
           height={"80vh"}
           events={holidays}
           eventContent={renderEventContent} // Use custom event renderer
+          eventMouseEnter={handleEventMouseEnter} // Handle mouse enter to show tooltip
         />
       )}
     </div>

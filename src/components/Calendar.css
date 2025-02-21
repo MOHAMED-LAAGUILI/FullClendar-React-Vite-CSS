@@ -150,10 +150,28 @@
   }
   
   .event-description {
+    color: black;
     font-size: 10px;
     margin-top: 3px;
     overflow: hidden; /* Prevent overflow */
     white-space: normal; /* Allow text to wrap */
     text-overflow: ellipsis; /* Add ellipsis for long text */
+  }
+  .event-tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8); /* Dark background for better contrast */
+    color: white; /* White text color */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    max-width: 200px; /* Adjust as needed */
+  }
+  
+  .event-tooltip img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
   }
   
