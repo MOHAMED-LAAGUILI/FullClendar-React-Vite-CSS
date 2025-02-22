@@ -96,6 +96,7 @@ function Calendar() {
           {error} <button onClick={fetchHolidays}>Retry</button>
         </div>
       )}
+      
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
         initialView={"dayGridMonth"}
