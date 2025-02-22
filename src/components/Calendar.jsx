@@ -109,6 +109,8 @@ function Calendar() {
           title: holiday.title,
           start: holiday.start,
           allDay: holiday.allDay,
+          borderColor:'white',
+          backgroundColor: "white",
           extendedProps: {
             description: holiday.description,
             countryImage: holiday.countryImage,
