@@ -4,7 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
-import Spinner from "./spinner";
+import Spinner from "./Spinner";
 import "../assets/css/Calendar.css";
 
 function Calendar() {
@@ -96,7 +96,7 @@ function Calendar() {
           {error} <button onClick={fetchHolidays}>Retry</button>
         </div>
       )}
-      
+
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
         initialView={"dayGridMonth"}
