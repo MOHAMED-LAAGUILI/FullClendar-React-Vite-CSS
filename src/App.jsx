@@ -1,115 +1,99 @@
 import Calendar from './components/Calendar';
-import ChartComponent from './components/Charts';
-import Plot from 'react-plotly.js';
 import { AgCharts } from 'ag-charts-react';
-import { useState } from 'react';
-
 
 function App() {
-  const data = {
-    labels: ['info1', 'info2', 'info3', 'info4', 'info5', 'info6', 'info7'],
-    datasets: [
+  // Common data used for multiple charts
+  const chartData = [
+    { title: "cc", month: 'Jan', avgTemp: 2.3, iceCreamSales: 162000 },
+    { title: "cc", month: 'Mar', avgTemp: 6.3, iceCreamSales: 302000 },
+    { title: "cc", month: 'May', avgTemp: 16.2, iceCreamSales: 800000 },
+    { title: "cc", month: 'Jul', avgTemp: 22.8, iceCreamSales: 1254000 },
+    { title: "cc", month: 'Sep', avgTemp: 14.5, iceCreamSales: 950000 },
+    { title: "cc", month: 'Nov', avgTemp: 8.9, iceCreamSales: 200000 },
+  ];
+
+  // Bar Chart
+  const barChartOptions = {
+    title: { text: "Ice Cream Sales (Bar Chart)" },
+    data: chartData,
+    series: [{ type: 'bar', xKey: 'month', yKey: 'iceCreamSales', fill: '#4caf50' }],
+    legend: { enabled: false }
+  };
+
+  // Line Chart
+  const lineChartOptions = {
+    title: { text: "Ice Cream Sales (Line Chart)" },
+    data: chartData,
+    series: [{ type: 'line', xKey: 'month', yKey: 'iceCreamSales', stroke: '#ff9800' }]
+  };
+
+  // Area Chart
+  const areaChartOptions = {
+    title: { text: "Ice Cream Sales (Area Chart)" },
+    data: chartData,
+    series: [{ type: 'area', xKey: 'month', yKey: 'iceCreamSales', fillOpacity: 0.3, fill: '#3f51b5' }]
+  };
+
+  // Scatter Chart
+  const scatterChartOptions = {
+    title: { text: "Ice Cream Sales (Scatter Chart)" },
+    data: chartData,
+    series: [{ type: 'scatter', xKey: 'month', yKey: 'iceCreamSales', marker: { size: 8, fill: '#e91e63' } }]
+  };
+
+  // Bubble Chart
+  const bubbleChartOptions = {
+    title: { text: "Temperature vs. Ice Cream Sales (Bubble Chart)" },
+    data: chartData,
+    series: [
       {
-        label: 'value',
-        backgroundColor: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'black'],
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
-        data: [102, 59, 33, 170, 60, 10, 100],
-      },
-    ],
+        type: 'bubble',
+        xKey: 'avgTemp',
+        yKey: 'iceCreamSales',
+        sizeKey: 'iceCreamSales',
+        shape: 'circle',
+        fill: '#673ab7',
+        stroke: '#512da8',
+      }
+    ]
   };
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Chart.js Example',
-      },
-    },
+  // Pie Chart
+  const pieChartOptions = {
+    title: { text: "Ice Cream Sales Distribution (Pie Chart)" },
+    data: chartData,
+    series: [{ type: 'pie', angleKey: 'iceCreamSales', labelKey: 'month', fills: ['#ff5722', '#2196f3', '#4caf50', '#ffeb3b', '#9c27b0', '#00bcd4'] }]
   };
 
-  const [chartOptions, setChartOptions] = useState({
-    // Data: Data to be displayed in the chart
-    data: [
-        { month: 'Jan', avgTemp: 2.3, iceCreamSales: 162000 },
-        { month: 'Mar', avgTemp: 6.3, iceCreamSales: 302000 },
-        { month: 'May', avgTemp: 16.2, iceCreamSales: 800000 },
-        { month: 'Jul', avgTemp: 22.8, iceCreamSales: 1254000 },
-        { month: 'Sep', avgTemp: 14.5, iceCreamSales: 950000 },
-        { month: 'Nov', avgTemp: 8.9, iceCreamSales: 200000 },
-    ],
-    // Series: Defines which chart type and data to use
-    series: [{ type: 'bar', xKey: 'month', yKey: 'iceCreamSales' }],
-});
+  // Stacked Bar Chart
+  const stackedBarChartOptions = {
+    title: { text: "Stacked Bar Chart Example" },
+    data: chartData,
+    series: [
+      { type: 'bar', xKey: 'month', yKey: 'iceCreamSales', stacked: true, fill: '#f44336' },
+      { type: 'bar', xKey: 'month', yKey: 'avgTemp', stacked: true, fill: '#03a9f4' }
+    ]
+  };
 
-  // Replace this with the actual value for the gauge
-  const totalHolidays = 15; // Example value
-  const holidayTitles = ['Holiday 1', 'Holiday 2', 'Holiday 3']; // Example holiday titles
+  // Radial Bar Chart
+  const radialBarChartOptions = {
+    title: { text: "Ice Cream Sales (Radial Bar Chart)" },
+    data: chartData,
+    series: [{ type: 'radial-bar', xKey: 'month', yKey: 'iceCreamSales', fill: '#8bc34a' }]
+  };
 
   return (
     <>
       <Calendar />
-      <ChartComponent type="bar" data={data} options={options} />
-      <ChartComponent type="line" data={data} options={options} />
-      <ChartComponent type="pie" data={data} options={options} />
-      <ChartComponent type="doughnut" data={data} options={options} />
-      <ChartComponent type="radar" data={data} options={options} />
 
-      {/* Gauge Chart */}
-      <Plot
-        data={[
-          {
-            type: 'indicator',
-            mode: 'gauge+number',
-            value: totalHolidays, // Set the actual total holidays value here
-            title: { text: "Total Holidays", font: { size: 24 } },
-            gauge: {
-              axis: { range: [0, 20] },
-              bar: { color: 'blue' },
-              steps: [
-                { range: [0, 10], color: 'lightgray' },
-                { range: [10, 20], color: 'gray' }
-              ],
-              threshold: {
-                line: { color: 'red', width: 4 },
-                thickness: 0.75,
-                value: 15
-              }
-            }
-          }
-        ]}
-        layout={{
-          width: 400,
-          height: 300,
-          margin: { t: 0, b: 0 },
-        }}
-      />
-
-      {/* Bar Chart */}
-      <Plot
-        data={[
-          {
-            x: holidayTitles, // Set the actual holiday titles for the x-axis
-            y: new Array(holidayTitles.length).fill(1), // Replace this with actual counts if available
-            type: 'bar',
-            marker: { color: 'blue' }
-          }
-        ]}
-        layout={{
-          title: 'Holidays Overview',
-          xaxis: { title: 'Holidays' },
-          yaxis: { title: 'Count' },
-          barmode: 'group',
-          width: 400,
-          height: 300,
-        }}
-      />
-
-<AgCharts options={chartOptions} />
+      <AgCharts options={barChartOptions} />
+      <AgCharts options={lineChartOptions} />
+      <AgCharts options={areaChartOptions} />
+      <AgCharts options={scatterChartOptions} />
+      <AgCharts options={bubbleChartOptions} />
+      <AgCharts options={pieChartOptions} />
+      <AgCharts options={stackedBarChartOptions} />
+      <AgCharts options={radialBarChartOptions} />
     </>
   );
 }
