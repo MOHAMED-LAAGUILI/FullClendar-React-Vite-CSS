@@ -16,10 +16,13 @@
     "@fullcalendar/list": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
+    "ag-charts-react": "^11.1.1",
     "chart.js": "^4.4.8",
+    "plotly.js": "^3.0.1",
     "react": "^19.0.0",
     "react-chartjs-2": "^5.3.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-plotly.js": "^2.6.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

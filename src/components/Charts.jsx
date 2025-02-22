@@ -27,6 +27,8 @@ const ChartComponent = ({ type, data, options }) => {
 
     return <div className="chart-container">
         
+        
+
         {renderChart()}
         
         </div>;
