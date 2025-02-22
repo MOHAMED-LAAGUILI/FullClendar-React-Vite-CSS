@@ -1,0 +1,23 @@
+ body {
+    font-family: 'Work Sans', sans-serif;
+    font-size: large;
+    font-weight: 600;
+    font-stretch:extra-expanded; /* Corrected font-family */
+    margin: 0;
+    padding: 0;
+  }
+  
+  
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 5px; /* Width of the scrollbar */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #465AF7; /* Color of the scrollbar thumb */
+    border-radius: 5px; /* Rounded edges for the scrollbar thumb */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgba(119, 119, 119, 0.1); /* Color of the scrollbar track */
+  }

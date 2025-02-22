@@ -5,7 +5,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
-import "./Calendar.css"; // Import your CSS file
+import Spinner from "./spinner";
+import "../assets/css/Calendar.css";
 
 function Calendar() {
   const currentYear = new Date().getFullYear();
@@ -78,22 +79,7 @@ function Calendar() {
   
   if (loading) {
     return (
-      <div className="spinner-container">
-        <div className="lds-spinner">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
+     <Spinner/>
     );
   }
   
