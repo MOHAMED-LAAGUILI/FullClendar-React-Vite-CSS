@@ -189,7 +189,7 @@
 
 /* Event Title */
 .event-title {
-  color: black;
+  color: white;
   max-width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -249,12 +249,16 @@
 .event-card {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   padding: 5px;
-  margin: 2px;
-  background: #e1f5fe; /* Light blue background for events */
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  color: white; /* Change text color as needed */
+  transition: background-color 0.3s ease;
+  /* Remove any default background color */
+}
+
+/* Optional: Add hover effect */
+.event-card:hover {
+  opacity: 0.8; /* Slightly fade on hover */
 }
 
 .event-image {
@@ -362,24 +366,3 @@
 
 
 
-/* Center the calendar controls on mobile */
-@media (max-width: 768px) {
-  .fc-toolbar {
-    display: flex; /* Use flexbox for alignment */
-    justify-content: center; /* Center the controls horizontally */
-    align-items: center; /* Center the controls vertically */
-    flex-direction: column; /* Stack controls vertically */
-  }
-
-  .fc-toolbar .fc-left, 
-  .fc-toolbar .fc-center, 
-  .fc-toolbar .fc-right {
-    width: 100%; /* Allow controls to take full width */
-    text-align: center; /* Center text within the controls */
-  }
-
-  .fc-toolbar .fc-button {
-    width: auto; /* Adjust button width to fit content */
-    margin: 5px 0; /* Add some margin for spacing between buttons */
-  }
-}

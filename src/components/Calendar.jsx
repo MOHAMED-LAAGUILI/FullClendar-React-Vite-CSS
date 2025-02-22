@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unknown-property */
 import { useEffect, useState } from "react";
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -22,11 +21,19 @@ function Calendar() {
     setTimeout(() => setLoading(false), 3000); // Simulate loading
   }, []);
 
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
   const fetchHolidays = async () => {
     setLoading(true);
     setError(null);
     const allHolidays = [];
-
     const countries = ["DE"];
     try {
       await Promise.all(
@@ -52,6 +59,7 @@ function Calendar() {
             allDay: true,
             countryImage: flagUrl, // Use flag image from REST API
             picture: "https://via.placeholder.com/600x200.png?text=Event+Image", // Placeholder for event image
+            backgroundColor: getRandomColor(), // Add random color
           }));
 
           allHolidays.push(...formattedHolidays);
@@ -76,13 +84,11 @@ function Calendar() {
     setModalOpen(false);
     setModalData(null);
   };
-  
+
   if (loading) {
-    return (
-     <Spinner/>
-    );
+    return <Spinner />;
   }
-  
+
   return (
     <div className="calendar-container">
       {error && (
@@ -90,41 +96,42 @@ function Calendar() {
           {error} <button onClick={fetchHolidays}>Retry</button>
         </div>
       )}
-     <FullCalendar
-      plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
-      initialView={"dayGridMonth"}
-      headerToolbar={{
-        start: "today prev,next",
-        center: "title",
-        end: "dayGridMonth,listWeek,listDay",
-      }}
-      height={"90vh"}
-      events={holidays.map((holiday) => ({
-        title: holiday.title,
-        start: holiday.start,
-        allDay: holiday.allDay,
-        extendedProps: {
-          description: holiday.description,
-          countryImage: holiday.countryImage,
-          picture: holiday.picture,
-        },
-      }))}
-      eventClick={handleEventClick}
-      eventContent={(eventInfo) => (
-        <div className="event-card" title={eventInfo.event.title}>
-          <img
-            src={eventInfo.event.extendedProps.countryImage}
-            alt="Country Flag"
-            className="event-image"
-          />
-          <span className="event-title">
-            {eventInfo.event.title.length > 20
-              ? `${eventInfo.event.title.slice(0, 20)}...`
-              : eventInfo.event.title}
-          </span>
-        </div>
-      )}
-    />
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+        initialView={"dayGridMonth"}
+        headerToolbar={{
+          start: "today prev,next",
+          center: "title",
+          end: "dayGridMonth,listWeek,listDay",
+        }}
+        height={"90vh"}
+        events={holidays.map((holiday) => ({
+          title: holiday.title,
+          start: holiday.start,
+          allDay: holiday.allDay,
+          extendedProps: {
+            description: holiday.description,
+            countryImage: holiday.countryImage,
+            picture: holiday.picture,
+            backgroundColor: holiday.backgroundColor, // Add random color
+          },
+        }))}
+        eventClick={handleEventClick}
+        eventContent={(eventInfo) => (
+          <div className="event-card" title={eventInfo.event.title} style={{ backgroundColor: eventInfo.event.extendedProps.backgroundColor }}>
+            <img
+              src={eventInfo.event.extendedProps.countryImage}
+              alt="Country Flag"
+              className="event-image"
+            />
+            <span className="event-title">
+              {eventInfo.event.title.length > 20
+                ? `${eventInfo.event.title.slice(0, 20)}...`
+                : eventInfo.event.title}
+            </span>
+          </div>
+        )}
+      />
       {modalOpen && modalData && (
         <div className="modal-overlay">
           <div className="modal-content">
