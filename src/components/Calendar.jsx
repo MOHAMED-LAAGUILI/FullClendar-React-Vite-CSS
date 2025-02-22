@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react"; 
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
+/* eslint-disable react/no-unknown-property */
+import { useEffect, useState } from "react";
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import interactionPlugin from '@fullcalendar/interaction';
+
+
 import "./Calendar.css"; // Import your CSS file
 
 function Calendar() {
@@ -15,6 +19,8 @@ function Calendar() {
 
   useEffect(() => {
     fetchHolidays();
+    setLoading(true);
+    setTimeout(() => setLoading(false), 3000); // Simulate loading
   }, []);
 
   const fetchHolidays = async () => {
@@ -22,9 +28,7 @@ function Calendar() {
     setError(null);
     const allHolidays = [];
 
-    const countries = [
-        'DE'
-    ]
+    const countries = ["DE"];
     try {
       await Promise.all(
         countries.map(async (code) => {
@@ -73,74 +77,82 @@ function Calendar() {
     setModalOpen(false);
     setModalData(null);
   };
-
+  
+  if (loading) {
+    return (
+      <div className="spinner-container">
+        <div className="lds-spinner">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <div className="calendar-container">
       {error && (
         <div className="error-message">
-          {error}{" "}
-          <button onClick={fetchHolidays}>Retry</button>
+          {error} <button onClick={fetchHolidays}>Retry</button>
         </div>
       )}
-
-      {loading ? (
-        <p className="loading">Loading holidays...</p>
-      ) : (
-        <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView={"dayGridMonth"}
-          headerToolbar={{
-            start: "today prev,next",
-            center: "title",
-            end: "",
-          }}
-          height={"80vh"}
-          events={holidays.map((holiday) => ({
-            title: holiday.title,
-            start: holiday.start,
-            allDay: holiday.allDay,
-            extendedProps: {
-              description: holiday.description,
-              countryImage: holiday.countryImage,
-              picture: holiday.picture,
-            },
-          }))}
-          eventClick={handleEventClick}
-          eventContent={(eventInfo) => (
-            <div 
-              style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent:'center',
-                padding: '5px', 
-                margin: '5px', 
-                background: '', 
-                borderRadius: '5px',
-                textAlign: 'center',
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-                textOverflow: 'ellipsis',
-                maxWidth: '100px' // Adjust width as needed
-              }} 
-              title={eventInfo.event.title} // Tooltip for full text visibility
-            >
-              <img 
-                src={eventInfo.event.extendedProps.countryImage} 
-                alt="Country Flag" 
-                style={{ width: '20px', height: '15px', marginRight: '5px' }} 
-              />
-              <span>{eventInfo.event.title.length > 5 ? `${eventInfo.event.title.slice(0, 5)}....` : eventInfo.event.title}</span>
-            </div>
-          )}
-        />
+     <FullCalendar
+      plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+      initialView={"dayGridMonth"}
+      headerToolbar={{
+        start: "today prev,next",
+        center: "title",
+        end: "dayGridMonth,listWeek,listDay",
+      }}
+      height={"90vh"}
+      events={holidays.map((holiday) => ({
+        title: holiday.title,
+        start: holiday.start,
+        allDay: holiday.allDay,
+        extendedProps: {
+          description: holiday.description,
+          countryImage: holiday.countryImage,
+          picture: holiday.picture,
+        },
+      }))}
+      eventClick={handleEventClick}
+      eventContent={(eventInfo) => (
+        <div className="event-card" title={eventInfo.event.title}>
+          <img
+            src={eventInfo.event.extendedProps.countryImage}
+            alt="Country Flag"
+            className="event-image"
+          />
+          <span className="event-title">
+            {eventInfo.event.title.length > 20
+              ? `${eventInfo.event.title.slice(0, 20)}...`
+              : eventInfo.event.title}
+          </span>
+        </div>
       )}
-
+    />
       {modalOpen && modalData && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <img src={modalData.countryImage} alt={modalData.title} className="country-banner" />
+            <img
+              src={modalData.countryImage}
+              alt={modalData.title}
+              className="country-banner"
+            />
             <h2>{modalData.title}</h2>
-            <p><strong>Description:</strong> {modalData.description}</p>
+            <p>
+              <strong>Description:</strong> {modalData.description}
+            </p>
             <button onClick={closeModal}>Close</button>
           </div>
         </div>

@@ -1,7 +1,7 @@
 /* Root Variables */
 :root {
     --border-color: rgba(255, 255, 255, 0.2);
-    --text-color: #fff;
+    --text-color: #000000;
     --hover-bg: rgba(255, 255, 255, 0.3);
     --shadow-color: rgba(0, 0, 0, 0.1);
   }
@@ -53,7 +53,7 @@
   
   .error-message button {
     background: red;
-    color: white;
+    color: rgb(255, 255, 255);
     border: none;
     padding: 6px 12px;
     margin-left: 10px;
@@ -105,7 +105,7 @@
     color: black;
     padding: 20px;
     border-radius: 8px;
-    max-width: 400px;
+    max-width: 600px;
   }
   
   .modal-content h2 {
@@ -121,7 +121,7 @@
   .modal-content button {
     margin-top: 10px;
     padding: 5px 10px;
-    background-color: #007bff;
+    background-color: #465AF7;
     color: white;
     border: none;
     border-radius: 5px;
@@ -147,5 +147,267 @@
 
 
 
-
+  .lds-spinner div:after {
+    color: #465AF7;
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 3.2px;
+    left: 36.8px;
+    width: 6.4px;
+    height: 17.6px;
+    border-radius: 20%;
+    background: currentColor;
+  }
+  .lds-spinner div:nth-child(1) {
+    transform: rotate(0deg);
+    animation-delay: -1.1s;
+  }
+  .lds-spinner div:nth-child(2) {
+    transform: rotate(30deg);
+    animation-delay: -1s;
+  }
+  .lds-spinner div:nth-child(3) {
+    transform: rotate(60deg);
+    animation-delay: -0.9s;
+  }
+  .lds-spinner div:nth-child(4) {
+    transform: rotate(90deg);
+    animation-delay: -0.8s;
+  }
+  .lds-spinner div:nth-child(5) {
+    transform: rotate(120deg);
+    animation-delay: -0.7s;
+  }
+  .lds-spinner div:nth-child(6) {
+    transform: rotate(150deg);
+    animation-delay: -0.6s;
+  }
+  .lds-spinner div:nth-child(7) {
+    transform: rotate(180deg);
+    animation-delay: -0.5s;
+  }
+  .lds-spinner div:nth-child(8) {
+    transform: rotate(210deg);
+    animation-delay: -0.4s;
+  }
+  .lds-spinner div:nth-child(9) {
+    transform: rotate(240deg);
+    animation-delay: -0.3s;
+  }
+  .lds-spinner div:nth-child(10) {
+    transform: rotate(270deg);
+    animation-delay: -0.2s;
+  }
+  .lds-spinner div:nth-child(11) {
+    transform: rotate(300deg);
+    animation-delay: -0.1s;
+  }
+  .lds-spinner div:nth-child(12) {
+    transform: rotate(330deg);
+    animation-delay: 0s;
+  }
+ 
   
+  
+  .spinner-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8); /* Optional: adds a slight overlay */
+  z-index: 9999; /* Ensures it's above other elements */
+}
+
+.lds-spinner {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.lds-spinner div {
+  transform-origin: 40px 40px;
+  animation: lds-spinner 1.2s linear infinite;
+}
+@keyframes lds-spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* General Container */
+.calendar-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Event Box Styling */
+.event-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #465AF7, #8f94fb);
+  color: rgb(0, 0, 0);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Hover Effect */
+.event-box:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Event Flag */
+.event-flag {
+  width: 16px;
+  height: 12px;
+  margin-right: 6px;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Event Title */
+.event-title {
+  color: black;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .calendar-container {
+    padding: 15px;
+  }
+  
+  .event-box {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+
+  .event-title {
+    max-width: 80px;
+  }
+}
+/* Custom styles for FullCalendar */
+.fc {
+  font-family: 'Roboto', sans-serif; /* Use Google Fonts for a modern feel */
+}
+
+.fc-toolbar {
+  background-color: #f8f9fa; /* Light background for the toolbar */
+  border-bottom: 1px solid #e0e0e0; /* Subtle border */
+  padding: 10px;
+}
+
+.fc-button {
+  background-color: #6200ee; /* Custom button color */
+  color: rgb(0, 0, 0); /* Button text color */
+  border-radius: 5px; /* Rounded buttons */
+  padding: 5px 10px;
+  transition: background-color 0.3s;
+}
+
+.fc-button:hover {
+  background-color: #3700b3; /* Darker color on hover */
+}
+
+.event-card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5px;
+  margin: 2px;
+  background: #e1f5fe; /* Light blue background for events */
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.event-image {
+  width: 20px;
+  height: 15px;
+  margin-right: 5px;
+}
+
+.event-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+}
+/* Custom styles for FullCalendar header buttons */
+.fc-toolbar {
+  background-color: #f8f9fa; /* Background for the toolbar */
+  padding: 10px; /* Padding for the toolbar */
+  border-bottom: 1px solid #e0e0e0; /* Subtle border */
+}
+
+.fc-button {
+  background-color: #6200ee; /* Button background color */
+  color: white; /* Button text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 5px 10px; /* Padding for buttons */
+  margin: 0 5px; /* Margin between buttons */
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+}
+
+.fc-button:hover {
+  background-color: #3700b3; /* Darker background on hover */
+  transform: scale(1.05); /* Slightly increase button size on hover */
+}
+
+.fc-button:disabled {
+  background-color: #e0e0e0; /* Disabled button color */
+  color: #a0a0a0; /* Disabled text color */
+  cursor: not-allowed; /* Change cursor for disabled buttons */
+}
+
+/* Ensure custom styles are applied to FullCalendar buttons */
+.fc-toolbar .fc-button {
+  background-color: #6200ee !important; /* Custom button background */
+  color: white !important; /* Custom button text color */
+  border: none !important; /* Remove default border */
+  border-radius: 5px !important; /* Rounded corners */
+  padding: 5px 10px !important; /* Button padding */
+  margin: 0 5px !important; /* Space between buttons */
+  transition: background-color 0.3s, transform 0.3s !important; /* Smooth transition */
+}
+
+.fc-toolbar .fc-button:hover {
+  background-color: #3700b3 !important; /* Darker button color on hover */
+  transform: scale(1.05) !important; /* Button scale effect */
+}
+
+.fc-toolbar .fc-button:disabled {
+  background-color: #e0e0e0 !important; /* Disabled button color */
+  color: #a0a0a0 !important; /* Disabled text color */
+  cursor: not-allowed !important; /* Change cursor for disabled buttons */
+}
+
+/* Custom styles for the header toolbar */
+.fc-toolbar {
+  background-color: #f8f9fa !important; /* Light background for the toolbar */
+  padding: 10px !important; /* Padding */
+  border-bottom: 1px solid #e0e0e0 !important; /* Subtle border */
+}
