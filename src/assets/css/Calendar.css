@@ -7,16 +7,20 @@
   }
   
  
-  /* Calendar container */
-  .calendar-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px;
-    min-height: 100vh;
-    
-  }
   
+ /* Calendar container */
+ .calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0; /* Remove padding */
+  margin: 0 auto; /* Center the container */
+  max-width: 1200px; /* Set a maximum width */
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+}
+
 /* Controls section */
 .controls {
   display: flex;
@@ -65,21 +69,23 @@
   
 
 
-  
-  /* FullCalendar customization */
-  .fc {
-    
-    width: 100%;
-    max-width: 2300px;
-    background: white;
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0px 6px 15px var(--shadow-color);
-  }
-  
+
+/* FullCalendar customization */
+.fc {
+  width: 100%; /* Full width of the container */
+  max-width: 100%; /* Ensure it doesn't exceed the container width */
+  background: white; /* Keep the calendar background white */
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0px 6px 15px var(--shadow-color);
+  display: flex;
+  justify-content: center; /* Center the content */
+  border: 1px solid #a19d9d;
+
+}
 
 
- 
+
  
 /* to make this modal bellow the calendar remove this class overlay*/
   .modal-overlay {
@@ -140,20 +146,15 @@
     padding: 8px 12px;
     border-radius: 8px;
     min-width: 80px;
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
 
 
 
-/* General Container */
-.calendar-container {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
+
 
 
 /* Event Box Styling */
@@ -328,11 +329,18 @@
 .fc-day {
   height: 100px; /* Adjust this value as needed for cell height */
   min-height: 100px; /* Ensure a minimum height */
+  width: calc(100% / 7); /* Ensure cells fit within the week (7 days) */
+  box-sizing: border-box; /* Include padding and border in element's total width */
+  overflow: hidden; /* Hide overflow content */
 }
 
+/* Custom styles for FullCalendar events */
 .fc-event {
   padding: 5px; /* Add some padding for events */
   border-radius: 5px; /* Rounded corners for events */
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
 }
 
 /* Ensure responsiveness */
@@ -340,10 +348,7 @@
   .fc-day {
     height: 80px; /* Reduce height on smaller screens */
     min-height: 80px; /* Ensure a minimum height */
-  }
-
-  .fc-event {
-    font-size: 0.9em; /* Adjust font size for events on smaller screens */
+    width: calc(100% / 7); /* Maintain width for responsiveness */
   }
 }
 
@@ -351,11 +356,9 @@
   .fc-day {
     height: 60px; /* Further reduce height for mobile screens */
     min-height: 60px; /* Ensure a minimum height */
-  }
-
-  .fc-event {
-    font-size: 0.8em; /* Further adjust font size for events */
+    width: calc(100% / 7); /* Maintain width for mobile responsiveness */
   }
 }
+
 
 
