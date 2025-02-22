@@ -8,7 +8,10 @@
   
   /* Smooth background */
   body {
-    font-family: "Poppins", sans-serif;
+    font-family: 'Work Sans', sans-serif;
+    font-size: large;
+    font-weight: 600;
+    font-stretch:extra-expanded; /* Corrected font-family */
     margin: 0;
     padding: 0;
   }
@@ -259,8 +262,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #465AF7, #8f94fb);
-  color: rgb(0, 0, 0);
   border-radius: 8px;
   padding: 5px 10px;
   font-size: 12px;
@@ -312,16 +313,28 @@
 }
 /* Custom styles for FullCalendar */
 .fc {
-  font-family: 'Roboto', sans-serif; /* Use Google Fonts for a modern feel */
+  
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
 }
 
 .fc-toolbar {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
   background-color: #f8f9fa; /* Light background for the toolbar */
   border-bottom: 1px solid #e0e0e0; /* Subtle border */
   padding: 10px;
 }
 
 .fc-button {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
   background-color: #6200ee; /* Custom button color */
   color: rgb(0, 0, 0); /* Button text color */
   border-radius: 5px; /* Rounded buttons */
@@ -410,4 +423,54 @@
   background-color: #f8f9fa !important; /* Light background for the toolbar */
   padding: 10px !important; /* Padding */
   border-bottom: 1px solid #e0e0e0 !important; /* Subtle border */
+}
+
+/* Custom styles for FullCalendar cells */
+.fc-day {
+  height: 100px; /* Adjust this value as needed for cell height */
+  min-height: 100px; /* Ensure a minimum height */
+}
+
+.fc-event {
+  padding: 5px; /* Add some padding for events */
+  border-radius: 5px; /* Rounded corners for events */
+}
+
+/* Ensure responsiveness */
+@media (max-width: 768px) {
+  .fc-day {
+    height: 80px; /* Reduce height on smaller screens */
+    min-height: 80px; /* Ensure a minimum height */
+  }
+
+  .fc-event {
+    font-size: 0.9em; /* Adjust font size for events on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .fc-day {
+    height: 60px; /* Further reduce height for mobile screens */
+    min-height: 60px; /* Ensure a minimum height */
+  }
+
+  .fc-event {
+    font-size: 0.8em; /* Further adjust font size for events */
+  }
+}
+
+
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 5px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(91, 5, 204); /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded edges for the scrollbar thumb */
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(119, 119, 119, 0.1); /* Color of the scrollbar track */
 }
