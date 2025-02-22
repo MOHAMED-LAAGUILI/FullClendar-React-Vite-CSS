@@ -28,6 +28,8 @@ const options = {
     },
 };
 
+
+
   return (
     <>
 <Calendar/>   
@@ -37,6 +39,7 @@ const options = {
             <ChartComponent type="doughnut" data={data} options={options} />
             <ChartComponent type="radar" data={data} options={options} />
 
+          
  </>
   )
 }
